@@ -8,10 +8,11 @@ public class Movement : MonoBehaviour
     private Rigidbody rb;
     private bool facingright = true;
     private bool isJumping = false;
+    private bool isGrounded;
     private float moveDirection;
+
     public float moveSpeed;
     public float jumpforce;
-
 
     void Awake()
     {
@@ -29,13 +30,41 @@ public class Movement : MonoBehaviour
 
     void FixedUpdate()
     {
+        // check ground
+        RaycastHit hit;
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, out hit, 1f);
+        
         // move
         Move();
     }
 
+    private void GetInput()
+    {
+        // movement
+        moveDirection = Input.GetAxis("Horizontal");
+        // jumping
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            Debug.Log("Jumping");
+            isJumping = true;
+        }
+        // sprinting
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            moveSpeed += 2.5f;
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            moveSpeed -= 2.5f;
+        }
+    }
+
     private void Move()
     {
-        rb.velocity = new Vector3(moveDirection * moveSpeed, rb.velocity.y);
+        if (isGrounded)
+        {
+            rb.velocity = new Vector3(moveDirection * moveSpeed, rb.velocity.y);
+        }
         if (isJumping)
         {
             rb.AddForce(new Vector3(0f, jumpforce, 0f));
@@ -43,15 +72,6 @@ public class Movement : MonoBehaviour
         isJumping = false;
     }
 
-    private void GetInput()
-    {
-        moveDirection = Input.GetAxis("Horizontal");
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("Jumping");
-            isJumping = true;
-        }
-    }
 
     private void Animate()
     {
