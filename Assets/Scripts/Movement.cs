@@ -11,8 +11,8 @@ public class Movement : MonoBehaviour
     private bool isGrounded;
     private float moveDirection;
 
-    public float moveSpeed;
-    public float jumpforce;
+    public float moveSpeed = 5;
+    public float jumpforce = 400;
 
     void Awake()
     {
@@ -51,11 +51,11 @@ public class Movement : MonoBehaviour
         // sprinting
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            moveSpeed += 2.5f;
+            moveSpeed += moveSpeed/2;
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            moveSpeed -= 2.5f;
+            moveSpeed -= moveSpeed/2;
         }
     }
 
