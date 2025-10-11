@@ -6,17 +6,22 @@ using UnityEngine.EventSystems;
 public class Movement : MonoBehaviour
 {
     private Rigidbody rb;
+    private Animator anim;
     private bool facingright = true;
     private bool isJumping = false;
     private bool isGrounded;
     private float moveDirection;
 
     public float moveSpeed = 5;
+    public float runSpeed = 7;
+    private float currentSpeed;
     public float jumpforce = 400;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
+        currentSpeed = moveSpeed;
     }
 
     // Update is called once per frame
@@ -51,11 +56,11 @@ public class Movement : MonoBehaviour
         // sprinting
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            moveSpeed += moveSpeed/2;
+            currentSpeed = runSpeed;
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            moveSpeed -= moveSpeed/2;
+            currentSpeed = moveSpeed;
         }
     }
 
@@ -63,7 +68,7 @@ public class Movement : MonoBehaviour
     {
         if (isGrounded)
         {
-            rb.velocity = new Vector3(moveDirection * moveSpeed, rb.velocity.y);
+            rb.velocity = new Vector3(moveDirection * currentSpeed, rb.velocity.y);
         }
         if (isJumping)
         {
