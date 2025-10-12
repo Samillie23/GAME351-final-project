@@ -8,9 +8,10 @@ public class TestFSM : MonoBehaviour
     // possible states of the agent
     public enum StateType
     {
-        Idle,
-        Chase,
-        Attack
+        Guard       = 0,
+        Investigate = 1,
+        Chase       = 2,
+        Attack      = 3
     }
 
     // the speed multiplier for running
@@ -35,7 +36,7 @@ public class TestFSM : MonoBehaviour
     float rotAngle;
 
     // current active state
-    int currState = (int) StateType.Idle;
+    int currState = (int) StateType.Guard;
 
     // get or set the current machine state
     public int State
@@ -104,8 +105,12 @@ public class TestFSM : MonoBehaviour
         // state, run the relevant behaviors
         switch (currState)
         {
-            case (int)StateType.Idle:
-                Idle();
+            case (int)StateType.Guard:
+                Guard();
+                break;
+
+            case (int)StateType.Investigate:
+                Investigate();
                 break;
 
             case (int)StateType.Chase:
@@ -124,7 +129,15 @@ public class TestFSM : MonoBehaviour
     {
         switch (currState)
         {
-            case (int)StateType.Idle:
+            case (int)StateType.Guard:
+                break;
+
+            case (int)StateType.Investigate:
+                // when agent has stopped moving, start guarding
+                if (HasArrived() && !agent.isStopped)
+                {
+                    Guard();
+                }
                 break;
 
             case (int)StateType.Chase:
@@ -140,16 +153,16 @@ public class TestFSM : MonoBehaviour
                 Vector3 direction = player.transform.position - transform.position;
                 if (direction.magnitude > agent.stoppingDistance)
                 {
-                    Idle();
+                    Guard();
                 }
                 break;
         }
     }
 
-    void Idle()
+    void Guard ()
     {
         //Debug.Log("Entered Guard State");
-        State = (int)StateType.Idle;
+        State = (int) StateType.Guard;
 
         animController.SetTrigger("isIdling");
 
@@ -158,7 +171,7 @@ public class TestFSM : MonoBehaviour
             agent.isStopped = true;
 
             // find a random rotation angle to apply to agent
-            rotAngle = GetAngle(transform.forward) + Random.Range(-1.0f, 1.0f) * maxAngle;
+            rotAngle = GetAngle(transform.forward) + Random.Range (-1.0f, 1.0f) * maxAngle;
         }
 
         // slowly rotate into final guarding orientation
@@ -167,7 +180,18 @@ public class TestFSM : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(0.0f, rotY, 0.0f);
     }
-    
+
+    void Investigate ()
+    {
+        //Debug.Log("Entered Investigate State");
+        State = (int)StateType.Investigate;
+
+        animController.SetTrigger("isWalking");
+        agent.isStopped = false;
+        agent.speed = walkSpeed;
+        agent.SetDestination(target.transform.position);
+    }
+
     void Chase ()
     {
         //Debug.Log("Entered Chase State");
