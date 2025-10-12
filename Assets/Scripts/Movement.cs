@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,15 +8,16 @@ public class Movement : MonoBehaviour
 {
     private Rigidbody rb;
     private Animator anim;
+
     private bool facingright = true;
     private bool isJumping = false;
-    private bool isGrounded;
+    [SerializeField] private bool isGrounded;
     private float moveDirection;
 
     public float moveSpeed = 5;
     public float runSpeed = 7;
     private float currentSpeed;
-    public float jumpforce = 400;
+    public float jumpForce = 400;
 
     void Awake()
     {
@@ -24,36 +26,41 @@ public class Movement : MonoBehaviour
         currentSpeed = moveSpeed;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // get input
         GetInput();
-        // animate
         Animate();
     }
 
     void FixedUpdate()
     {
-        // check ground
-        RaycastHit hit;
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, out hit, 1f);
-        
-        // move
+        CheckGround();
         Move();
+    }
+
+    void CheckGround()
+    {
+        LayerMask ground = LayerMask.GetMask("Ground");
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, -transform.up, out hit, 1.1f, ground))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
     }
 
     private void GetInput()
     {
-        // movement
         moveDirection = Input.GetAxis("Horizontal");
-        // jumping
+
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            Debug.Log("Jumping");
             isJumping = true;
         }
-        // sprinting
+
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             currentSpeed = runSpeed;
@@ -68,31 +75,28 @@ public class Movement : MonoBehaviour
     {
         if (isGrounded)
         {
-            rb.velocity = new Vector3(moveDirection * currentSpeed, rb.velocity.y);
+            rb.velocity = new Vector2(moveDirection * currentSpeed, rb.velocity.y);
         }
+
         if (isJumping)
         {
-            rb.AddForce(new Vector3(0f, jumpforce, 0f));
+            rb.AddForce(Vector2.up * jumpForce, ForceMode.Impulse);
         }
+
         isJumping = false;
     }
-
 
     private void Animate()
     {
         if (moveDirection > 0 && !facingright)
         {
-            FlipCharacter();
+            facingright = !facingright;
+            transform.Rotate(0f, 180f, 0f);
         }
         else if (moveDirection < 0 && !facingright)
         {
-            FlipCharacter();
+            facingright = !facingright;
+            transform.Rotate(0f, 180f, 0f);
         }
-    }
-
-    private void FlipCharacter()
-    {
-        facingright = !facingright;
-        transform.Rotate(0f, 180f, 0f);
     }
 }
