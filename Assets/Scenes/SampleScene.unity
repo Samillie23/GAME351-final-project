@@ -1036,9 +1036,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1781887762}
-  - component: {fileID: 1781887764}
   - component: {fileID: 1781887763}
   - component: {fileID: 1781887765}
+  - component: {fileID: 1781887766}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -1078,22 +1078,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 88
   m_CollisionDetection: 1
---- !u!114 &1781887764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1781887761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cfc507f1ff13c340b781a0c27a3e370, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isGrounded: 0
-  moveSpeed: 5
-  runSpeed: 7
-  jumpForce: 70
 --- !u!136 &1781887765
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1108,6 +1092,30 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1781887766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781887761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cfc507f1ff13c340b781a0c27a3e370, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  runSpeed: 7
+  jumpForce: 80
+  blockSpeedMultiplier: 0.25
+  blockStopsActions: 1
+  rollSpeed: 11
+  rollDuration: 0.35
+  rollCooldown: 0.6
+  useIFrames: 1
+  normalLayer: 0
+  iFrameLayer: 8
+  debugUI: 1
 --- !u!1 &1830194931
 GameObject:
   m_ObjectHideFlags: 0

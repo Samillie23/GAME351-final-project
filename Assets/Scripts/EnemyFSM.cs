@@ -11,10 +11,11 @@ public class EnemyFSM : MonoBehaviour
     Animator animator;
     NavMeshAgent navMeshAgent;
 
-    [SerializeField] bool canSeePlayer()
+    [SerializeField]
+    bool canSeePlayer()
     {
         float distance = Vector3.Distance(this.transform.position, player.transform.position);
-        if (distance < 8)
+        if (distance < 10)
         {
             return true;
         }
@@ -23,8 +24,9 @@ public class EnemyFSM : MonoBehaviour
             return false;
         }
     }
-
-    [SerializeField] bool canAttackPlayer()
+    
+    [SerializeField]
+    bool canAttackPlayer()
     {
         float distance = Vector3.Distance(this.transform.position, player.transform.position);
         if (distance < 4)
@@ -36,6 +38,14 @@ public class EnemyFSM : MonoBehaviour
             return false;
         }
     }
+    
+    float GetAngle (Vector3 direction)
+    {
+        float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+
+        return angle;
+    }
+
 
     // possible states of the agent
     public enum StateType
@@ -98,6 +108,10 @@ public class EnemyFSM : MonoBehaviour
         switch (currState)
         {
             case (int)StateType.Idle:
+                if (canSeePlayer())
+                {
+                    Chase();
+                }
                 break;
 
             case (int)StateType.Chase:
@@ -139,6 +153,13 @@ public class EnemyFSM : MonoBehaviour
     {
         State = (int)StateType.Attack;
 
+        // face player
+        Vector3 direction = player.transform.position - transform.position;
+        float angle = GetAngle (direction);
+        float rotY  = Mathf.LerpAngle(transform.rotation.eulerAngles.y, angle, navMeshAgent.angularSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Euler(0.0f, rotY, 0.0f);
+
         navMeshAgent.isStopped = true;
+        // attack
     }
 }
