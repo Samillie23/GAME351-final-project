@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,33 +11,24 @@ public class EnemyFSM : MonoBehaviour
     GameObject target;
     Animator animator;
     NavMeshAgent navMeshAgent;
+    Rigidbody rb;
+    private bool isAttacking;
+    private bool isHit;
+    private float attackRadius = 2.3f;
+    private float attackForce = 50f;
 
     [SerializeField]
     bool canSeePlayer()
     {
         float distance = Vector3.Distance(this.transform.position, player.transform.position);
-        if (distance < 10)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (distance < 10) ? true : false;
     }
     
     [SerializeField]
     bool canAttackPlayer()
     {
         float distance = Vector3.Distance(this.transform.position, player.transform.position);
-        if (distance < 4)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (distance < 4) ? true : false;
     }
     
     float GetAngle (Vector3 direction)
@@ -71,12 +63,15 @@ public class EnemyFSM : MonoBehaviour
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+        isAttacking = false;
     }
 
     void Update()
     {
+        navMeshAgent.enabled = isHit ? false : true;             
         // run the primitive state machine
         UpdateStateMachine();
         TransitionStates  ();
@@ -161,5 +156,15 @@ public class EnemyFSM : MonoBehaviour
 
         navMeshAgent.isStopped = true;
         // attack
+    }
+
+    public IEnumerator TakingDamage(float hitStrength)
+    {
+        isHit = true;
+        yield return new WaitForSeconds(.15f);
+        rb.AddForce(-transform.forward * hitStrength, ForceMode.Impulse);
+        rb.AddForce(transform.up * hitStrength, ForceMode.Impulse);
+        yield return new WaitForSeconds(2.3f);
+        isHit = false;
     }
 }

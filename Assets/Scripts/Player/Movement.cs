@@ -10,8 +10,8 @@ public class Movement : MonoBehaviour
     private Animator anim;
 
     private bool facingright = true;
-    private bool isJumping = false;
-    private bool isGrounded;
+    public bool isJumping = false;
+    public bool isGrounded;
     private float moveDirection;
 
     [Header("Movement")]
@@ -19,18 +19,18 @@ public class Movement : MonoBehaviour
     public float runSpeed = 7;
     private float currentSpeed;
     public float jumpForce = 80;
-    private bool isRunning;
+    public bool isRunning;
 
     [Header("Block")]
     public float blockSpeedMultiplier = 0.1f;     // <--- BLOCK EFFECT (slow movement)
     public bool blockStopsActions = true;          // <--- if true, can't roll/dash while blocking
-    private bool isBlocking = false;                        // <--- BLOCK STATE
+    public bool isBlocking = false;                        // <--- BLOCK STATE
 
     [Header("Dodge / Roll")]
     public float rollSpeed = 11f;                  // <--- ROLL HORIZONTAL SPEED
     public float rollDuration = 0.35f;             // <--- ROLL TIME
     public float rollCooldown = 0.6f;              // <--- ROLL COOLDOWN
-    private bool isRolling = false;                        // <--- ROLL STATE
+    public bool isRolling = false;                        // <--- ROLL STATE
     private float lastRollTime = -999f;            // <--- ROLL TIMER
 
     [Header("I-Frames")]
