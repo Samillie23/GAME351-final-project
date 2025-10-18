@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,33 +10,32 @@ public class EnemyFSM : MonoBehaviour
     GameObject target;
     Animator animator;
     NavMeshAgent navMeshAgent;
-    Rigidbody rb;
-    private bool isAttacking;
-    private bool isHit;
-    private float attackRadius = 2.3f;
-    private float attackForce = 50f;
 
-    [SerializeField]
-    bool canSeePlayer()
+    [SerializeField] bool canSeePlayer()
     {
         float distance = Vector3.Distance(this.transform.position, player.transform.position);
-        return (distance < 10) ? true : false;
+        if (distance < 8)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
-    
-    [SerializeField]
-    bool canAttackPlayer()
+
+    [SerializeField] bool canAttackPlayer()
     {
         float distance = Vector3.Distance(this.transform.position, player.transform.position);
-        return (distance < 4) ? true : false;
+        if (distance < 4)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
-    
-    float GetAngle (Vector3 direction)
-    {
-        float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-
-        return angle;
-    }
-
 
     // possible states of the agent
     public enum StateType
@@ -63,15 +61,12 @@ public class EnemyFSM : MonoBehaviour
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
-        isAttacking = false;
     }
 
     void Update()
     {
-        navMeshAgent.enabled = isHit ? false : true;             
         // run the primitive state machine
         UpdateStateMachine();
         TransitionStates  ();
@@ -103,10 +98,6 @@ public class EnemyFSM : MonoBehaviour
         switch (currState)
         {
             case (int)StateType.Idle:
-                if (canSeePlayer())
-                {
-                    Chase();
-                }
                 break;
 
             case (int)StateType.Chase:
@@ -148,23 +139,6 @@ public class EnemyFSM : MonoBehaviour
     {
         State = (int)StateType.Attack;
 
-        // face player
-        Vector3 direction = player.transform.position - transform.position;
-        float angle = GetAngle (direction);
-        float rotY  = Mathf.LerpAngle(transform.rotation.eulerAngles.y, angle, navMeshAgent.angularSpeed * Time.deltaTime);
-        transform.rotation = Quaternion.Euler(0.0f, rotY, 0.0f);
-
         navMeshAgent.isStopped = true;
-        // attack
-    }
-
-    public IEnumerator TakingDamage(float hitStrength)
-    {
-        isHit = true;
-        yield return new WaitForSeconds(.15f);
-        rb.AddForce(-transform.forward * hitStrength, ForceMode.Impulse);
-        rb.AddForce(transform.up * hitStrength, ForceMode.Impulse);
-        yield return new WaitForSeconds(2.3f);
-        isHit = false;
     }
 }
