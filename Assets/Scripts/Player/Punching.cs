@@ -10,7 +10,8 @@ public class Punching : MonoBehaviour
     public float uppercutForce = 50f;
     public float punchRadius = 2f;
     public float comboResetTime = 1.2f;
-    public LayerMask attackableLayer;
+    private LayerMask attackableLayer;
+    public KeyCode punchKey = KeyCode.O;
 
     private Animator animator;
     private int punchIndex = 0;
@@ -22,14 +23,14 @@ public class Punching : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        attackableLayer = LayerMask.GetMask("Attackable");
+        attackableLayer = LayerMask.GetMask("Enemy");
     }
 
     void Update()
     {
         comboTimer += Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.O) && !isPunching)
+        if (Input.GetKeyDown(punchKey) && !isPunching)
         {
             if (comboTimer > comboResetTime)
                 punchIndex = 0; // Reset combo

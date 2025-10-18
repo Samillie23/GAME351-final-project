@@ -8,7 +8,7 @@ public class GroundSlam : MonoBehaviour
     [Header("Slam Settings")]
     public float slamRadius = 5f;
     public float slamForce = 15f;
-    public LayerMask affectedLayers;
+    private LayerMask attackableLayer;
     public KeyCode slamKey = KeyCode.J;
 
     private Animator animator;
@@ -19,7 +19,7 @@ public class GroundSlam : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<Movement>();
-        affectedLayers = LayerMask.GetMask("Attackable"); 
+        attackableLayer = LayerMask.GetMask("Enemy");
     }
 
     void Update()
@@ -43,7 +43,7 @@ public class GroundSlam : MonoBehaviour
 
     private void DoSlam()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, slamRadius, affectedLayers);
+        Collider[] hits = Physics.OverlapSphere(transform.position, slamRadius, attackableLayer);
 
         foreach (var hit in hits)
         {

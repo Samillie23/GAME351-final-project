@@ -11,6 +11,7 @@ public class Movement : MonoBehaviour
 
     private bool facingright = true;
     public bool isJumping = false;
+    public bool isHit = false;
     public bool isGrounded;
     private float moveDirection;
 
@@ -133,6 +134,16 @@ public class Movement : MonoBehaviour
             facingright = !facingright;
             transform.Rotate(0f, 180f, 0f);
         }
+    }
+
+    public IEnumerator TakingDamage(float hitStrength)
+    {
+        isHit = true;
+        yield return new WaitForSeconds(.15f);
+        rb.AddForce(-transform.forward * hitStrength, ForceMode.Impulse);
+        rb.AddForce(transform.up * hitStrength, ForceMode.Impulse);
+        yield return new WaitForSeconds(2.3f);
+        isHit = false;
     }
 
     // Tiny on-screen debug so they can tell it’s working

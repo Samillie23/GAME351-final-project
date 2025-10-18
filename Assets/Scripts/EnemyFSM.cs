@@ -12,10 +12,12 @@ public class EnemyFSM : MonoBehaviour
     Animator animator;
     NavMeshAgent navMeshAgent;
     Rigidbody rb;
+
     private bool isAttacking;
     private bool isHit;
     private float attackRadius = 2.3f;
     private float attackForce = 50f;
+    private LayerMask attackableLayer;
 
     [SerializeField]
     bool canSeePlayer()
@@ -37,7 +39,6 @@ public class EnemyFSM : MonoBehaviour
 
         return angle;
     }
-
 
     // possible states of the agent
     public enum StateType
@@ -66,6 +67,7 @@ public class EnemyFSM : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+        attackableLayer = LayerMask.GetMask("Player");
         isAttacking = false;
     }
 
@@ -150,12 +152,35 @@ public class EnemyFSM : MonoBehaviour
 
         // face player
         Vector3 direction = player.transform.position - transform.position;
-        float angle = GetAngle (direction);
-        float rotY  = Mathf.LerpAngle(transform.rotation.eulerAngles.y, angle, navMeshAgent.angularSpeed * Time.deltaTime);
+        float angle = GetAngle(direction);
+        float rotY = Mathf.LerpAngle(transform.rotation.eulerAngles.y, angle, navMeshAgent.angularSpeed * Time.deltaTime);
         transform.rotation = Quaternion.Euler(0.0f, rotY, 0.0f);
 
         navMeshAgent.isStopped = true;
         // attack
+
+        isAttacking = true;
+        Invoke(nameof(ApplyForce), 0.25f);
+        Invoke(nameof(ResetKick), 0.5f);
+    }
+    
+    void ApplyForce()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward, attackRadius, attackableLayer);
+
+        foreach (var hit in hits)
+        {
+            Movement player = hit.GetComponentInParent<Movement>();
+            if (player != null)
+            {
+                StartCoroutine(player.TakingDamage(attackForce));
+            }
+        }
+    }
+
+    void ResetKick()
+    {
+        isAttacking = false;
     }
 
     public IEnumerator TakingDamage(float hitStrength)

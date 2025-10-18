@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Kicking : MonoBehaviour
 {
-    public float KickForce = 10f;
-    public float KickRadius = 2f;
-    public LayerMask KickableLayer;
+    public float kickForce = 10f;
+    public float kickRadius = 2f;
+    private LayerMask attackableLayer;
+    public KeyCode kickKey = KeyCode.P;
 
     private Animator animator;
     private bool isKicking;
@@ -15,12 +16,12 @@ public class Kicking : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        KickableLayer = LayerMask.GetMask("Attackable");
+        attackableLayer = LayerMask.GetMask("Enemy");
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P) && !isKicking)
+        if (Input.GetKeyDown(kickKey) && !isKicking)
             Kick();
     }
 
@@ -34,14 +35,14 @@ public class Kicking : MonoBehaviour
 
     void ApplyForce()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward, KickRadius, KickableLayer);
+        Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward, kickRadius, attackableLayer);
 
         foreach (var hit in hits)
         {
             EnemyFSM enemy = hit.GetComponentInParent<EnemyFSM>();
             if (enemy != null)
             {
-                StartCoroutine(enemy.TakingDamage(KickForce));
+                StartCoroutine(enemy.TakingDamage(kickForce));
             }
         }
     }
