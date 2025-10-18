@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2689,6 +2689,7 @@ GameObject:
   - component: {fileID: 1356047484}
   - component: {fileID: 1356047487}
   - component: {fileID: 1356047486}
+  - component: {fileID: 1356047488}
   m_Layer: 6
   m_Name: Capsule
   m_TagString: Untagged
@@ -2761,6 +2762,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1356047483}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!95 &1356047488
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356047483}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6f087f2ce9a25484698812937097692e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1392727097
 GameObject:
   m_ObjectHideFlags: 0
@@ -3744,6 +3765,7 @@ GameObject:
   - component: {fileID: 1781887763}
   - component: {fileID: 1781887765}
   - component: {fileID: 1781887766}
+  - component: {fileID: 1781887767}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -3809,18 +3831,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cfc507f1ff13c340b781a0c27a3e370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isJumping: 0
+  isGrounded: 0
   moveSpeed: 5
   runSpeed: 7
   jumpForce: 80
+  isRunning: 0
   blockSpeedMultiplier: 0.25
   blockStopsActions: 1
+  isBlocking: 0
   rollSpeed: 11
   rollDuration: 0.35
   rollCooldown: 0.6
+  isRolling: 0
   useIFrames: 1
   normalLayer: 0
   iFrameLayer: 8
   debugUI: 1
+--- !u!95 &1781887767
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781887761}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6f087f2ce9a25484698812937097692e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1830194931
 GameObject:
   m_ObjectHideFlags: 0
