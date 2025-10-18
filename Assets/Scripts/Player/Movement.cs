@@ -37,7 +37,7 @@ public class Movement : MonoBehaviour
     [Header("I-Frames")]
     public bool useIFrames = true;
     public int normalLayer = 0;
-    public int iFrameLayer = 8;
+    public int iFrameLayer = 9;
 
     // (Optional) quick on-screen debug so teammates can see states
     [Header("Debug")]
@@ -48,16 +48,11 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         currentSpeed = moveSpeed;
-        if (useIFrames)
-        gameObject.layer = normalLayer;
+        if (useIFrames) gameObject.layer = normalLayer;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            StartCoroutine(TakingDamage(50f));
-        }
         GetInput();
         Animate();
     }

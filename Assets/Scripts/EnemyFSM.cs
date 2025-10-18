@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.AI;
@@ -16,7 +17,7 @@ public class EnemyFSM : MonoBehaviour
     private bool isAttacking = false;
     private bool isHit;
     private float attackRadius = 2.5f;
-    private float attackForce = 30f;
+    private float attackForce = 40f;
     private LayerMask attackableLayer;
 
     [SerializeField]
@@ -68,7 +69,7 @@ public class EnemyFSM : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
-        attackableLayer = LayerMask.GetMask("Player");
+        attackableLayer.value = 1 << LayerMask.GetMask("Player");
     }
 
     void Update()
@@ -148,17 +149,26 @@ public class EnemyFSM : MonoBehaviour
         transform.rotation = Quaternion.Euler(0.0f, rotY, 0.0f);
 
         navMeshAgent.isStopped = true;
-        if (!isAttacking)
-        {
-            isAttacking = true;
-            StartCoroutine(ApplyForce());
-        }
+        StartCoroutine(CheckAttack());
     }
     
+    IEnumerator CheckAttack()
+    {
+        while (canAttackPlayer())
+        {
+            yield return new WaitForSeconds(1f);
+            if (!isAttacking)
+            {
+                isAttacking = true;
+                StartCoroutine(ApplyForce());
+            }
+        }
+    }
+
     IEnumerator ApplyForce()
     {
         yield return new WaitForSeconds(.25f);
-        Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward, attackRadius, attackableLayer);
+        Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward, attackRadius, attackableLayer.value);
 
         foreach (var hit in hits)
         {

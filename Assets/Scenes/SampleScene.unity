@@ -3288,7 +3288,8 @@ PrefabInstance:
       propertyPath: m_StoppingDistance
       value: 1.7
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8631417081660940027, guid: 8806de2156b1b3c448f027367abd25a8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8806de2156b1b3c448f027367abd25a8, type: 3}
 --- !u!1 &1620755565
 GameObject:
@@ -3775,7 +3776,6 @@ GameObject:
   - component: {fileID: 1781887766}
   - component: {fileID: 1781887769}
   - component: {fileID: 1781887768}
-  - component: {fileID: 1781887767}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -3858,21 +3858,6 @@ MonoBehaviour:
   normalLayer: 0
   iFrameLayer: 8
   debugUI: 1
---- !u!114 &1781887767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1781887761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30388865f787d22418ed4e2dbf97c5dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slamRadius: 5
-  slamForce: 40
-  slamKey: 106
 --- !u!114 &1781887768
 MonoBehaviour:
   m_ObjectHideFlags: 0

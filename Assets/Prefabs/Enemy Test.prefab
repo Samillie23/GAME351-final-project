@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1987342049262766579}
   - component: {fileID: 1867758054405671988}
   - component: {fileID: 5169387136105188771}
-  - component: {fileID: 8631417081660940027}
+  - component: {fileID: 2620350146789516847}
   - component: {fileID: 7593632692295136041}
   m_Layer: 6
   m_Name: Enemy Test
@@ -66,7 +66,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8631417081660940027
+--- !u!114 &2620350146789516847
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
