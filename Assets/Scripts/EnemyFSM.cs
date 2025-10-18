@@ -154,7 +154,7 @@ public class EnemyFSM : MonoBehaviour
     
     IEnumerator CheckAttack()
     {
-        while (canAttackPlayer())
+        while (canAttackPlayer() && !isHit)
         {
             yield return new WaitForSeconds(1f);
             if (!isAttacking)
@@ -167,7 +167,7 @@ public class EnemyFSM : MonoBehaviour
 
     IEnumerator ApplyForce()
     {
-        yield return new WaitForSeconds(.25f);
+        yield return new WaitForSeconds(.5f);
         Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward, attackRadius, attackableLayer.value);
 
         foreach (var hit in hits)
@@ -178,7 +178,7 @@ public class EnemyFSM : MonoBehaviour
                 StartCoroutine(player.TakingDamage(attackForce));
             }
         }
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(1f);
         isAttacking = false;
     }
 

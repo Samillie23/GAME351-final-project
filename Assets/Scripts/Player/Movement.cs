@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -54,7 +55,6 @@ public class Movement : MonoBehaviour
     void Update()
     {
         GetInput();
-        Animate();
     }
 
     void FixedUpdate()
@@ -75,6 +75,7 @@ public class Movement : MonoBehaviour
     {
         // move direction
         moveDirection = Input.GetAxis("Horizontal");
+        transform.forward = new Vector3(moveDirection, 0, 0);
 
         // jumping
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded) isJumping = true;
@@ -119,20 +120,6 @@ public class Movement : MonoBehaviour
 
         if (useIFrames) gameObject.layer = normalLayer;
         isRolling = false;
-    }
-
-    private void Animate()
-    {
-        if (moveDirection > 0 && !facingright)
-        {
-            facingright = !facingright;
-            transform.Rotate(0f, 180f, 0f);
-        }
-        else if (moveDirection < 0 && !facingright)
-        {
-            facingright = !facingright;
-            transform.Rotate(0f, 180f, 0f);
-        }
     }
 
     public IEnumerator TakingDamage(float hitStrength)
