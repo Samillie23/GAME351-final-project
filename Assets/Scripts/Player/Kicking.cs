@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Kicking : MonoBehaviour
 {
-    public float kickForce = 10f;
-    public float kickRadius = 2f;
+    public float kickForce;
+    public float kickRadius;
     private LayerMask attackableLayer;
     public KeyCode kickKey = KeyCode.P;
 

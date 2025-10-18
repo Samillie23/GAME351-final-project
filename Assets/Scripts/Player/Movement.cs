@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,7 +12,6 @@ public class Movement : MonoBehaviour
 
     private bool facingright = true;
     public bool isJumping = false;
-    public bool isHit = false;
     public bool isGrounded;
     private float moveDirection;
 
@@ -54,6 +54,10 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            StartCoroutine(TakingDamage(50f));
+        }
         GetInput();
         Animate();
     }
@@ -138,12 +142,9 @@ public class Movement : MonoBehaviour
 
     public IEnumerator TakingDamage(float hitStrength)
     {
-        isHit = true;
-        yield return new WaitForSeconds(.15f);
+        yield return new WaitForSeconds(.1f);
         rb.AddForce(-transform.forward * hitStrength, ForceMode.Impulse);
         rb.AddForce(transform.up * hitStrength, ForceMode.Impulse);
-        yield return new WaitForSeconds(2.3f);
-        isHit = false;
     }
 
     // Tiny on-screen debug so they can tell it’s working

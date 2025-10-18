@@ -6,8 +6,8 @@ using UnityEngine;
 public class GroundSlam : MonoBehaviour
 {
     [Header("Slam Settings")]
-    public float slamRadius = 5f;
-    public float slamForce = 15f;
+    public float slamRadius;
+    public float slamForce;
     private LayerMask attackableLayer;
     public KeyCode slamKey = KeyCode.J;
 

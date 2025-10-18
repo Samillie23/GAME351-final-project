@@ -13,24 +13,24 @@ public class EnemyFSM : MonoBehaviour
     NavMeshAgent navMeshAgent;
     Rigidbody rb;
 
-    private bool isAttacking;
+    private bool isAttacking = false;
     private bool isHit;
-    private float attackRadius = 2.3f;
-    private float attackForce = 50f;
+    private float attackRadius = 2.5f;
+    private float attackForce = 30f;
     private LayerMask attackableLayer;
 
     [SerializeField]
     bool canSeePlayer()
     {
-        float distance = Vector3.Distance(this.transform.position, player.transform.position);
+        float distance = Vector3.Distance(transform.position, player.transform.position);
         return (distance < 10) ? true : false;
     }
     
     [SerializeField]
     bool canAttackPlayer()
     {
-        float distance = Vector3.Distance(this.transform.position, player.transform.position);
-        return (distance < 4) ? true : false;
+        float distance = Vector3.Distance(transform.position, player.transform.position);
+        return (distance < 3) ? true : false;
     }
     
     float GetAngle (Vector3 direction)
@@ -45,6 +45,7 @@ public class EnemyFSM : MonoBehaviour
     {
         Idle,
         Chase,
+        Attacking,
         Attack
     }
 
@@ -68,7 +69,6 @@ public class EnemyFSM : MonoBehaviour
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         attackableLayer = LayerMask.GetMask("Player");
-        isAttacking = false;
     }
 
     void Update()
@@ -93,8 +93,8 @@ public class EnemyFSM : MonoBehaviour
                 Chase();
                 break;
 
-            case (int)StateType.Attack:
-                Attack();
+            case (int)StateType.Attacking:
+                Attacking();
                 break;
         }
 
@@ -105,24 +105,15 @@ public class EnemyFSM : MonoBehaviour
         switch (currState)
         {
             case (int)StateType.Idle:
-                if (canSeePlayer())
-                {
-                    Chase();
-                }
+                if (canSeePlayer()) Chase();
                 break;
 
             case (int)StateType.Chase:
-                if (canAttackPlayer())
-                {
-                    Attack();
-                }
+                if (canAttackPlayer()) Attacking();
                 break;
 
             case (int)StateType.Attack:
-                if (!canAttackPlayer())
-                {
-                    Idle();
-                }
+                if (!canAttackPlayer()) Idle();
                 break;
         }
     }
@@ -146,7 +137,7 @@ public class EnemyFSM : MonoBehaviour
         navMeshAgent.SetDestination(target.transform.position);
     }
 
-    void Attack()
+    void Attacking()
     {
         State = (int)StateType.Attack;
 
@@ -157,15 +148,16 @@ public class EnemyFSM : MonoBehaviour
         transform.rotation = Quaternion.Euler(0.0f, rotY, 0.0f);
 
         navMeshAgent.isStopped = true;
-        // attack
-
-        isAttacking = true;
-        Invoke(nameof(ApplyForce), 0.25f);
-        Invoke(nameof(ResetKick), 0.5f);
+        if (!isAttacking)
+        {
+            isAttacking = true;
+            StartCoroutine(ApplyForce());
+        }
     }
     
-    void ApplyForce()
+    IEnumerator ApplyForce()
     {
+        yield return new WaitForSeconds(.25f);
         Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward, attackRadius, attackableLayer);
 
         foreach (var hit in hits)
@@ -176,17 +168,14 @@ public class EnemyFSM : MonoBehaviour
                 StartCoroutine(player.TakingDamage(attackForce));
             }
         }
-    }
-
-    void ResetKick()
-    {
+        yield return new WaitForSeconds(.5f);
         isAttacking = false;
     }
 
     public IEnumerator TakingDamage(float hitStrength)
     {
         isHit = true;
-        yield return new WaitForSeconds(.15f);
+        yield return new WaitForSeconds(.1f);
         rb.AddForce(-transform.forward * hitStrength, ForceMode.Impulse);
         rb.AddForce(transform.up * hitStrength, ForceMode.Impulse);
         yield return new WaitForSeconds(2.3f);
