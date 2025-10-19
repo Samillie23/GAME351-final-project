@@ -6,10 +6,10 @@ using UnityEngine;
 public class Punching : MonoBehaviour
 {
     [Header("Attack Settings")]
-    public float punchForce;
-    public float uppercutForce;
-    public float punchRadius;
-    public float comboResetTime;
+    public float punchForce = 7.5f;
+    public float uppercutForce = 20;
+    public float punchRadius = 2;
+    public float comboResetTime = 1.2f;
     private LayerMask attackableLayer;
     public KeyCode punchKey = KeyCode.O;
 

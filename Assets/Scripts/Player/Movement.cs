@@ -15,6 +15,7 @@ public class Movement : MonoBehaviour
     public bool isJumping = false;
     public bool isGrounded;
     private float moveDirection;
+    private int health = 20;
 
     [Header("Movement")]
     public float moveSpeed = 5;
@@ -55,6 +56,7 @@ public class Movement : MonoBehaviour
     void Update()
     {
         GetInput();
+        if (health < 0) Destroy(gameObject);
     }
 
     void FixedUpdate()
@@ -76,13 +78,13 @@ public class Movement : MonoBehaviour
         // move direction
         moveDirection = Input.GetAxis("Horizontal");
         if (new Vector3(moveDirection, 0, 0) != Vector3.zero) transform.forward = new Vector3(moveDirection, 0, 0);
-        anim.speed = moveDirection;
-
+        anim.SetBool("Walking", moveDirection < 0 || moveDirection > 0 ? true : false);
+    
         // jumping
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded) isJumping = true;
 
         // block speed if true, run speed if true otherwise walk
-        isBlocking = Input.GetKey(KeyCode.Mouse1);
+        isBlocking = Input.GetKey(KeyCode.J);
         isRunning = Input.GetKey(KeyCode.LeftShift);
         currentSpeed = isBlocking ? moveSpeed * blockSpeedMultiplier : (isRunning ? runSpeed : moveSpeed);
 
@@ -128,6 +130,7 @@ public class Movement : MonoBehaviour
         yield return new WaitForSeconds(.1f);
         rb.AddForce(-transform.forward * hitStrength, ForceMode.Impulse);
         rb.AddForce(transform.up * hitStrength, ForceMode.Impulse);
+        health -= 1;
     }
 
     // Tiny on-screen debug so they can tell it’s working

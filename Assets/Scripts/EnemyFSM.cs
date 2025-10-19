@@ -14,6 +14,7 @@ public class EnemyFSM : MonoBehaviour
     NavMeshAgent navMeshAgent;
     Rigidbody rb;
 
+    private int health = 3;
     private bool isAttacking = false;
     private bool isHit;
     private float attackRadius = 2.5f;
@@ -77,7 +78,8 @@ public class EnemyFSM : MonoBehaviour
         navMeshAgent.enabled = isHit ? false : true;             
         // run the primitive state machine
         UpdateStateMachine();
-        TransitionStates  ();
+        TransitionStates();
+        if (health < 0) Destroy(gameObject);
     }
 
     void UpdateStateMachine ()
@@ -185,6 +187,7 @@ public class EnemyFSM : MonoBehaviour
     public IEnumerator TakingDamage(float hitStrength)
     {
         isHit = true;
+        health -= 1;
         yield return new WaitForSeconds(.1f);
         rb.AddForce(-transform.forward * hitStrength, ForceMode.Impulse);
         rb.AddForce(transform.up * hitStrength, ForceMode.Impulse);

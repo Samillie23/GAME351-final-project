@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy1: {fileID: 192744775697903539, guid: 8806de2156b1b3c448f027367abd25a8, type: 3}
   enemy2: {fileID: 0}
-  enemy1PerWave: 5
+  enemy1PerWave: 4
   enemy2PerWave: 0
