@@ -75,7 +75,8 @@ public class Movement : MonoBehaviour
     {
         // move direction
         moveDirection = Input.GetAxis("Horizontal");
-        if (new Vector3 (moveDirection, 0, 0) != Vector3.zero) transform.forward = new Vector3(moveDirection, 0, 0);
+        if (new Vector3(moveDirection, 0, 0) != Vector3.zero) transform.forward = new Vector3(moveDirection, 0, 0);
+        anim.speed = moveDirection;
 
         // jumping
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded) isJumping = true;
