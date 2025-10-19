@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     public GameObject menuUI;
     public GameObject creditUI;
 
+    public GameObject GameOverUI;
+
     public void OnRestartPress()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -38,5 +40,17 @@ public class UIManager : MonoBehaviour
     {
         creditUI.SetActive(false);
     }
-
+    public void reset()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void OnGameOver()
+    {
+        GameOverUI.SetActive(true);
+    }
+    public void OffGameOver()
+    {
+        GameOverUI.SetActive(false);
+    }
 }
+
