@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 5169387136105188771}
   - component: {fileID: 2620350146789516847}
   - component: {fileID: 7593632692295136041}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Enemy Test
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 8809538886735979179}
   - component: {fileID: 639978456483469597}
   - component: {fileID: 471661848789021107}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -156,7 +156,7 @@ public class EnemyFSM : MonoBehaviour
     {
         while (canAttackPlayer() && !isHit)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.5f);
             if (!isAttacking)
             {
                 isAttacking = true;

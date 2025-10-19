@@ -218,8 +218,7 @@ public class TestFSM : MonoBehaviour
         Vector3 direction = player.transform.position - transform.position;
         float angle = GetAngle (direction);
 
-        float rotY  = Mathf.LerpAngle(transform.rotation.eulerAngles.y, angle,
-                                      agent.angularSpeed * Time.deltaTime);
+        float rotY  = Mathf.LerpAngle(transform.rotation.eulerAngles.y, angle, agent.angularSpeed * Time.deltaTime);
 
         transform.rotation = Quaternion.Euler (0.0f, rotY, 0.0f);
     }

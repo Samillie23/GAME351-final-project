@@ -5,13 +5,13 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Scripting.APIUpdating;
 
 public class Movement : MonoBehaviour
 {
     private Rigidbody rb;
     private Animator anim;
 
-    private bool facingright = true;
     public bool isJumping = false;
     public bool isGrounded;
     private float moveDirection;
@@ -75,7 +75,7 @@ public class Movement : MonoBehaviour
     {
         // move direction
         moveDirection = Input.GetAxis("Horizontal");
-        transform.forward = new Vector3(moveDirection, 0, 0);
+        if (new Vector3 (moveDirection, 0, 0) != Vector3.zero) transform.forward = new Vector3(moveDirection, 0, 0);
 
         // jumping
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded) isJumping = true;

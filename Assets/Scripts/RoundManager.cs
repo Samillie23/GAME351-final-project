@@ -17,12 +17,15 @@ public class RoundManager : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
-        SpawnSpawner();
-        Destroy(this);
+        if (other.gameObject.CompareTag("Player"))
+        {
+            SpawnSpawner();
+            Destroy(this);
+        }
     }
-
+    
     void SpawnSpawner()
     {
         for (int i = 0; i < spawnLocation.Length; i++)
