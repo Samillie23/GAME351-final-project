@@ -75,7 +75,9 @@ public class Movement : MonoBehaviour
     {
         // move direction
         moveDirection = Input.GetAxis("Horizontal");
-
+        anim.SetBool("WalkingRight", moveDirection > 0);
+        anim.SetBool("WalkingLeft", moveDirection < 0);
+        
         // jumping
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded) isJumping = true;
 
